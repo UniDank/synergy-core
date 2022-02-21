@@ -5,6 +5,9 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  
+  workflow_dispatch:
+    
 
 jobs:
   build-arch64:
@@ -69,3 +72,17 @@ jobs:
 
     - name: Run unit test
       run: .\build\bin\Release\unittests.exe
+    
+    - name: Archive Release
+      uses: thedoctor0/zip-release@master
+      with:
+        type: 'zip'
+        filename: synergy-windows.zip
+        directory: ext\openssl\windows\x64\bin\* build\
+    - name: Windows Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        files: build/windows/runner/Release/MacRecoveryX-${{github.ref_name}}-windows.zip
