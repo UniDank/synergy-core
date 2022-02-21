@@ -85,6 +85,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         files: build/synergy-windows.zip
+        tag: 1.14.3.5.0
     
     - name: Archive Release
       uses: thedoctor0/zip-release@master
@@ -99,3 +100,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         files: ext/openssl/windows/x64/bin/synergy-windows-ssl.zip
+        tag: 1.14.3.5.0
