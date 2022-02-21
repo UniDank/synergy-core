@@ -78,11 +78,24 @@ jobs:
       with:
         type: 'zip'
         filename: synergy-windows.zip
-        directory: build\
+        directory: build/
+    - name: Archive Release
+      uses: thedoctor0/zip-release@master
+      with:
+        type: 'zip'
+        filename: synergy-windows-ssl.zip
+        directory: ext/openssl/windows/x64/bin/*
     - name: Windows Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        files: build/windows/runner/Release/MacRecoveryX-${{github.ref_name}}-windows.zip
+        files: build/synergy-windows.zip
+    - name: Windows Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        files: ext/openssl/windows/x64/bin/synergy-windows-ssl.zip
