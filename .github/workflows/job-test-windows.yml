@@ -5,6 +5,9 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  
+  workflow_dispatch:
+    
 
 jobs:
   build-arch64:
@@ -69,3 +72,49 @@ jobs:
 
     - name: Run unit test
       run: .\build\bin\Release\unittests.exe
+    
+    - name: Archive Release
+      uses: thedoctor0/zip-release@master
+      with:
+        type: 'zip'
+        filename: synergy-windows.zip
+        directory: build/
+    # - name: Windows Release
+    #   uses: softprops/action-gh-release@v1 
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     files: build/synergy-windows.zip
+    #     tag: 1.14.3.5.0
+    - name: Release Apps
+      uses: ncipollo/release-action@v1
+      with:
+        tag: 1.14.3.5.0
+        name: 1.14.3.5.0 Android
+        token: ${{ secrets.GITHUB_TOKEN }}
+        artifacts: 'build/synergy-windows.zip'
+        prerelease: true
+    
+    - name: Archive Release
+      uses: thedoctor0/zip-release@master
+      with:
+        type: 'zip'
+        filename: synergy-windows-ssl.zip
+        directory: ext/openssl/windows/x64/bin/
+
+    # - name: Windows Release
+    #   uses: softprops/action-gh-release@v1 
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     files: ext/openssl/windows/x64/bin/synergy-windows-ssl.zip
+    #     tag: 1.14.3.5.0
+
+    - name: Release Apps
+      uses: ncipollo/release-action@v1
+      with:
+        tag: 1.14.3.5.1
+        name: 1.14.3.5.1 Android
+        token: ${{ secrets.GITHUB_TOKEN }}
+        artifacts: 'ext/openssl/windows/x64/bin/synergy-windows-ssl.zip'
+        prerelease: true
